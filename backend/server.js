@@ -5,7 +5,15 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'https://testapp-1-e0pc.onrender.com'
+  ],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI, {

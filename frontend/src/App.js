@@ -4,6 +4,8 @@ import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import './App.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,7 @@ function App() {
   const fetchTodos = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/todos');
+      const response = await axios.get(`${API_BASE_URL}/api/todos`);
       setTodos(response.data);
     } catch (err) {
       console.error('Error fetching todos:', err);
@@ -25,7 +27,7 @@ function App() {
 
   const addTodo = async (title) => {
     try {
-      const response = await axios.post('/api/todos', { title });
+      const response = await axios.post(`${API_BASE_URL}/api/todos`, { title });
       setTodos([response.data, ...todos]);
     } catch (err) {
       console.error('Error adding todo:', err);
@@ -34,7 +36,7 @@ function App() {
 
   const toggleTodo = async (id, completed) => {
     try {
-      const response = await axios.put(`/api/todos/${id}`, { completed: !completed });
+      const response = await axios.put(`${API_BASE_URL}/api/todos/${id}`, { completed: !completed });
       setTodos(todos.map(todo => (todo._id === id ? response.data : todo)));
     } catch (err) {
       console.error('Error updating todo:', err);
@@ -43,7 +45,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`/api/todos/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/todos/${id}`);
       setTodos(todos.filter(todo => todo._id !== id));
     } catch (err) {
       console.error('Error deleting todo:', err);
